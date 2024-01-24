@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import svg from "../assets/reshot-icon-unicorn-XDCHJTKVNP.svg";
 import FlotingInputLebal from "../components/FlotingInputLebal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SocialLoginButton from "../components/SocialLoginButton";
 const Signup = () => {
@@ -11,6 +11,8 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [passwordStrength, setpasswordStrength] = useState("");
+  const navigate = useNavigate();
+
   const [userdata, setUserdata] = useState({
     username: "",
     email: "",
@@ -87,6 +89,7 @@ const Signup = () => {
       const { accesstoken, refreshToken } = res.data;
       localStorage.setItem("accesstoken", accesstoken);
       localStorage.setItem("refreshToken", refreshToken);
+      if (accesstoken && refreshToken) navigate("/home");
     } catch (err) {
       console.log(err);
       if (err.response.status === 409 || err.response.status === 500)
@@ -160,10 +163,10 @@ const Signup = () => {
                   onChange={handalInputChange}
                 />
               </div>
-              <div className="h-6 pl-2 mb-2">
-                <p className="text-red-700">
+              <div className="h-6 pl-2 mb-2 w-full overflow-hidden">
+                <p className="text-red-700 w-full overflow-hidden">
                   {userdata.password !== userdata.confirmPassword
-                    ? "Password and confirm password do not match."
+                    ? "Password and confirm password not match."
                     : ""}
                 </p>
               </div>

@@ -114,7 +114,8 @@ const userData = async (req, res) => {
       return res.status(401).json({ errMessage: "Token is missing" });
     }
     const decoded = jwt.verify(token, jwt_secret);
-    const userID = decoded.userID;
+
+    const userID = decoded.userId;
     const data = await UserModel.getUserData(userID);
     res.status(200).json({ data: data });
   } catch (error) {

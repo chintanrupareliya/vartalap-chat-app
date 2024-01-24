@@ -2,6 +2,8 @@ const db = require("../DB/db");
 const dbconnect = db();
 const { generateResetToken } = require("../utils/utilityFunction");
 const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+dotenv.config();
 //function for insert new user data to database
 
 const createUser = async (username, password, email) => {
@@ -107,8 +109,8 @@ const sendEmail = async (email) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "justlogin234@gmail.com",
-          pass: "oslq bkri tiit mbmr",
+          user: process.env.Email_id,
+          pass: process.env.Email_Password,
         },
       });
       const resetlink = `http://localhost:5173/ResetPassword/${reset_token}`;

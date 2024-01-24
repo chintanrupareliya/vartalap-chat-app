@@ -1,7 +1,7 @@
 import svg from "../assets/reshot-icon-unicorn-XDCHJTKVNP.svg";
 import FlotingInputLebal from "../components/FlotingInputLebal";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SocialLoginButton from "../components/SocialLoginButton";
 
@@ -12,6 +12,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   // useEffect(() => {
   //   const handleBeforeUnload = () => {
   //     localStorage.clear();
@@ -35,24 +36,16 @@ function Login() {
       console.log(res.data.message);
       localStorage.setItem("accesstoken", accesstoken);
       localStorage.setItem("refreshToken", refreshToken);
-      fetchUserData(accesstoken);
+      if (accesstoken && refreshToken) {
+        navigate("/home");
+      }
     } catch (err) {
       console.log(err);
       setError(err.response.data.errMessage);
       console.log(err.response.data.errMessage);
     }
   };
-  const fetchUserData = async (accesstoken) => {
-    try {
-      const res = await axios.get("http://localhost:3030/api/auth/userData", {
-        headers: { Authorization: accesstoken },
-      });
-      console.log(res.data);
-      localStorage.setItem("userdata", JSON.stringify(res.data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   return (
     <div
       className="flex items-center justify-center bg-white "
